@@ -7,7 +7,7 @@ import CreatePost                  from '../posts/CreatePost'
 import Modal                       from 'react-modal'
 import sortByFunc                  from 'sort-by'
 import { SORT_ORDER_DESC as desc } from '../../utils/sorting'
-import SortComponent               from '../SortComponent'
+import SortComponent               from '../Sort/SortComponent'
 
 class MainView extends Component {
 
@@ -39,16 +39,13 @@ class MainView extends Component {
     }
 
     render() {
-        const { categories, posts, sortOrder, sortBy, changeSortOrder, changeSortBy } = this.props
+        const { categories, posts } = this.props
         this.sortingPosts(this.props)
         return (
             <div>
                 <CategoryList categories={ categories }
                               label='Categories'/>
-                <SortComponent sortOrder={ sortOrder }
-                               sortBy={ sortBy }
-                               changeSortBy={ changeSortBy }
-                               changeSortOrder={ changeSortOrder }/>
+                <SortComponent/>
                 <PostList posts={ posts }/>
                 <button onClick={ () => this.setState({ createPostOpen: true }) }>create post</button>
                 <Modal
@@ -83,20 +80,6 @@ const mapDispatchToProps = (dispatch) => ({
      */
     fetchingPosts: () => dispatch(Actions.fetchAllPosts()),
     createPost: (post) => dispatch(Actions.createPost(post)),
-    /**
-     * @description Updating the sort order for posts in the store
-     * @param sortOrder
-     * @returns {*}
-     */
-    changeSortOrder:
-        (sortOrder) => dispatch(Actions.changeSortOrder(sortOrder)),
-    /**
-     * @description Updating the sort element for posts in the store
-     * @param sortBy
-     * @returns {*}
-     */
-    changeSortBy:
-        (sortBy) => dispatch(Actions.changeSortBy(sortBy))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainView)

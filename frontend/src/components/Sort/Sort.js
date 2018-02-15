@@ -1,6 +1,6 @@
 import React             from 'react'
 import PropTypes         from 'prop-types'
-import * as SortingUtils from '../utils/sorting'
+import * as SortingUtils from '../../utils/sorting'
 
 const SortComponent = ({ sortOrder, sortBy, changeSortOrder, changeSortBy }) => (
     <div>
