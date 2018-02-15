@@ -1,0 +1,12 @@
+.App {
+  text-align: center;
+}
+
+.categoryLink {
+  margin: 5px;
+}
+
+.postList {
+    margin: 10px;
+    background-color: lightgray;
+}
