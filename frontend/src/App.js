@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './App.css'
 import { Route, Switch }    from 'react-router-dom'
-import MainView             from './components/views/MainView'
+import MainView             from './components/containers/MainView'
 
 class App extends Component {
 

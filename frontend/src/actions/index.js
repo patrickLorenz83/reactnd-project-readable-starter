@@ -1,5 +1,6 @@
 import * as CategoryAPI from '../api/CategoryAPI'
 import * as PostsApi    from '../api/PostsAPI'
+import uuid from 'uuid/v4'
 
 export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES'
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
@@ -15,13 +16,12 @@ export const fetchAllPosts = () => dispatch => (
     PostsApi.getAll().then(posts => dispatch(receivePosts(posts)))
 )
 
-
 export const createPost = (post) => dispatch => (
     PostsApi.createPost({
         ...post,
-        id: `${post.author}_${Date.now()}`,
+        id: uuid(),
         timestamp: Date.now()
-    }).then(fetchAllPosts())
+    }).then(dispatch(fetchAllPosts()))
 )
 
 export const changeSortOrder = (sortOrder) => ({

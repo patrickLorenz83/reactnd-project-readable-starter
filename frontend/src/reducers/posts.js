@@ -1,9 +1,10 @@
-import * as Actions from '../actions'
+import * as Actions      from '../actions'
+import * as SortingUtils from '../utils/sorting'
 
 const initState = {
     data: [],
-    sortOrder: 'desc',
-    sortBy: 'voteScore'
+    sortOrder: SortingUtils.SORT_ORDER_DESC,
+    sortBy: SortingUtils.SORT_ORDER_VOTE
 }
 
 const posts = (state = initState, action) => {

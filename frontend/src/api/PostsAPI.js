@@ -16,5 +16,5 @@ export const getAll = () => fetch(`${url}/posts`, { headers })
 export const createPost = (post) => fetch(`${url}/posts`, {
     method: 'POST',
     headers,
-    body: post
+    body: JSON.stringify(post)
 })
