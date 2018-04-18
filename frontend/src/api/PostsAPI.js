@@ -13,6 +13,10 @@ const headers = {
 export const getAll = () => fetch(`${url}/posts`, { headers })
     .then(response => response.json())
 
+export const getPost = (id) => fetch(`${url}/posts/${id}`, { headers })
+    .then(response => response.json())
+
+
 export const createPost = (post) => fetch(`${url}/posts`, {
     method: 'POST',
     headers,

@@ -8,7 +8,7 @@ const CategoryList = ({ categories, label }) => (
         { label && <div>{ label }</div> }
         { categories && categories.length > 0 && categories.map(category =>
             <Link className='categoryLink'
-                  to={ category.path }
+                  to={ `/category/${category.path}` }
                   key={ category.name }>{ category.name }
             </Link>)
         }

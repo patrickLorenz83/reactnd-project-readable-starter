@@ -3,14 +3,21 @@ import PropTypes            from 'prop-types'
 import * as Types           from '../../types'
 
 class CreatePost extends Component {
-    handleSubmit = (event) => {
+
+    state = {
+        title: '',
+        comment: '',
+        author: '',
+        category: ''
+    }
+
+    handleSubmit = () => {
         event.preventDefault()
-        console.log('handle props', this.props)
         this.props.createPost({
-            title: event.target.title.value,
-            body: event.target.comment.value,
-            author: event.target.author.value,
-            category: event.target.category.value
+            title: this.state.title,
+            body: this.state.comment,
+            author: this.state.author,
+            category: this.state.category
         })
     }
 
@@ -21,14 +28,19 @@ class CreatePost extends Component {
             <div>
                 <form onSubmit={ this.handleSubmit }>
                     <input name='title'
+                           onChange={ (event) => this.setState({ title: event.target.value }) }
                            placeholder='title'/>
                     <input name='comment'
+                           onChange={ (event) => this.setState({ comment: event.target.value }) }
                            placeholder='comment'/>
                     <input name='author'
+                           onChange={ (event) => this.setState({ author: event.target.value }) }
                            placeholder='author'/>
-                    <select name='category'>
+                    <select name='category'
+                            value={ this.state.category }>
                         { categories && categories.map(category => (
                             <option key={ category.name }
+                                    onChange={ (event) => this.setState({ category: event.target.value }) }
                                     value={ category.name }>{ category.name }</option>
                         )) }
                     </select>
@@ -40,7 +52,8 @@ class CreatePost extends Component {
 }
 
 CreatePost.propTypes = {
-    categories: PropTypes.arrayOf(Types.Category),
-    createPost: PropTypes.func.isRequired
+    categories: PropTypes.arrayOf(Types.Category).isRequired,
+    createPost: PropTypes.func.isRequired,
+    post: PropTypes.object
 }
 export default CreatePost

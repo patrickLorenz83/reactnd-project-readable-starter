@@ -3,17 +3,12 @@ import * as Actions                from '../../actions'
 import { connect }                 from 'react-redux'
 import CategoryList                from '../categories/CategoryList'
 import PostList                    from '../posts/PostList'
-import CreatePost                  from '../posts/CreatePost'
-import Modal                       from 'react-modal'
 import sortByFunc                  from 'sort-by'
 import { SORT_ORDER_DESC as desc } from '../../utils/sorting'
 import SortComponent               from '../Sort/SortComponent'
+import { Link }                    from 'react-router-dom'
 
-class MainView extends Component {
-
-    state = {
-        createPostOpen: false
-    }
+class CategoryView extends Component {
 
     componentDidMount() {
         const { fetchingCategories, fetchingPosts } = this.props
@@ -29,34 +24,17 @@ class MainView extends Component {
         posts.sort(sortByFunc(`${sortOrder === desc ? '-' : ''}${sortBy}`))
     }
 
-    /**
-     * @description Closing the post create modal dialog and calling the action to submitting the data to backend.
-     * @param post, new post data
-     */
-    createOrUpdatePost = (post) => {
-        this.setState({ createPostOpen: false })
-        this.props.createPost(post)
-    }
 
     render() {
-        console.log('main view')
-        const { categories, posts } = this.props
+        const { categories, posts, match  } = this.props
         this.sortingPosts(this.props)
         return (
             <div>
                 <CategoryList categories={ categories }
                               label='Categories'/>
+                <Link to='/' key='overview'>Overview</Link>
                 <SortComponent/>
-                <PostList posts={ posts }/>
-                <button onClick={ () => this.setState({ createPostOpen: true }) }>create post</button>
-                <Modal
-                    isOpen={ this.state.createPostOpen }
-                    contentLabel='create mew Post'
-                    onRequestClose={ () => this.setState({ createPostOpen: false }) }
-                >
-                    <CreatePost categories={ categories }
-                                createPost={ (post) => this.createOrUpdatePost(post) }/>
-                </Modal>
+                <PostList posts={ posts.filter(post => post.category === match.params.category) }/>
             </div>
         )
     }
@@ -83,4 +61,4 @@ const mapDispatchToProps = (dispatch) => ({
     createPost: (post) => dispatch(Actions.createPost(post)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainView)
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryView)
