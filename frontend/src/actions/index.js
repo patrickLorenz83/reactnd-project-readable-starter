@@ -1,13 +1,14 @@
 import * as CategoryAPI from '../api/CategoryAPI'
 import * as PostsApi    from '../api/PostsAPI'
-import uuid from 'uuid/v4'
+import * as CommentsApi from '../api/CommentsAPI'
+import uuid             from 'uuid/v4'
 
 export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES'
+export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const RECEIVE_POST = 'RECEIVE_POST'
 export const CHANGE_SORT_ORDER = 'CHANGE_SORT_ORDER'
 export const CHANGE_SORT_BY = 'CHANGE_SORT_BY'
-
 
 export const fetchAllCategories = () => dispatch => (
     CategoryAPI.getAll().then(categories => (dispatch(receiveCategories(categories))))
@@ -21,12 +22,41 @@ export const fetchPost = (id) => dispatch => (
     PostsApi.getPost(id).then(post => dispatch(receivePost(post)))
 )
 
+export const fetchComments = (id) => dispatch => (
+    CommentsApi.getAllForPost(id).then(comments => dispatch(receiveComments(comments)))
+)
+
 export const createPost = (post) => dispatch => (
     PostsApi.createPost({
         ...post,
         id: uuid(),
         timestamp: Date.now()
     }).then(dispatch(fetchAllPosts()))
+)
+
+export const createComment = (comment) => dispatch => (
+    CommentsApi.createComment({
+        ...comment,
+        id: uuid(),
+        timestamp: Date.now()
+    })
+        .then(dispatch(fetchComments(comment.parentId)))
+)
+
+export const updateComment = (comment) => dispatch => (
+    CommentsApi.updateComment(comment)
+        .then(dispatch(fetchComments(comment.parentId)))
+)
+
+export const deleteComment = (commentId, postId) => dispatch => (
+    CommentsApi.deleteComment(commentId)
+        .then(dispatch(fetchComments(postId)))
+)
+
+export const updatePost = (id, post) => dispatch => (
+    PostsApi.updatePost(id, post)
+        .then(dispatch(fetchAllPosts()))
+        .then(dispatch(fetchPost(id)))
 )
 
 export const changeSortOrder = (sortOrder) => ({
@@ -52,4 +82,9 @@ export const receivePost = (post) => ({
 export const receiveCategories = (categories) => ({
     type: RECEIVE_CATEGORIES,
     categories
+})
+
+export const receiveComments = (comments) => ({
+    type: RECEIVE_COMMENTS,
+    comments
 })

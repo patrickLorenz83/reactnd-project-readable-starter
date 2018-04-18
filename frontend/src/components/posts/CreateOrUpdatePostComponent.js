@@ -2,22 +2,37 @@ import React, { Component } from 'react'
 import PropTypes            from 'prop-types'
 import * as Types           from '../../types'
 
-class CreatePost extends Component {
+class CreateOrUpdatePostComponent extends Component {
 
     state = {
         title: '',
-        comment: '',
+        text: '',
         author: '',
         category: ''
     }
 
-    handleSubmit = () => {
+    handleSubmit = (event) => {
         event.preventDefault()
-        this.props.createPost({
-            title: this.state.title,
-            body: this.state.comment,
-            author: this.state.author,
-            category: this.state.category
+        this.props.onComplete(
+            {
+                title: this.state.title,
+                body: this.state.text,
+                author: this.state.author,
+                category: this.state.category ? this.state.category : this.props.categories[ 0 ].name
+            }
+        )
+    }
+
+    componentDidMount() {
+        const { post } = this.props
+
+        console.log('creating post', post)
+        post && this.setState({
+            postId: post.id,
+            title: post.title,
+            text: post.body,
+            author: post.author,
+            category: post.category
         })
     }
 
@@ -28,19 +43,22 @@ class CreatePost extends Component {
             <div>
                 <form onSubmit={ this.handleSubmit }>
                     <input name='title'
+                           value={ this.state.title }
                            onChange={ (event) => this.setState({ title: event.target.value }) }
                            placeholder='title'/>
                     <input name='comment'
-                           onChange={ (event) => this.setState({ comment: event.target.value }) }
-                           placeholder='comment'/>
+                           value={ this.state.text }
+                           onChange={ (event) => this.setState({ text: event.target.value }) }
+                           placeholder='text'/>
                     <input name='author'
+                           value={ this.state.author }
                            onChange={ (event) => this.setState({ author: event.target.value }) }
                            placeholder='author'/>
                     <select name='category'
-                            value={ this.state.category }>
+                            value={ this.state.category }
+                            onChange={ (event) => this.setState({ category: event.target.value }) }>
                         { categories && categories.map(category => (
                             <option key={ category.name }
-                                    onChange={ (event) => this.setState({ category: event.target.value }) }
                                     value={ category.name }>{ category.name }</option>
                         )) }
                     </select>
@@ -51,9 +69,9 @@ class CreatePost extends Component {
     }
 }
 
-CreatePost.propTypes = {
+CreateOrUpdatePostComponent.propTypes = {
     categories: PropTypes.arrayOf(Types.Category).isRequired,
-    createPost: PropTypes.func.isRequired,
-    post: PropTypes.object
+    post: PropTypes.object,
+    onComplete: PropTypes.func.isRequired
 }
-export default CreatePost
+export default CreateOrUpdatePostComponent

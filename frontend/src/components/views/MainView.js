@@ -3,7 +3,7 @@ import * as Actions                from '../../actions'
 import { connect }                 from 'react-redux'
 import CategoryList                from '../categories/CategoryList'
 import PostList                    from '../posts/PostList'
-import CreatePost                  from '../posts/CreatePost'
+import CreateOrUpdatePostComponent from '../posts/CreateOrUpdatePostComponent'
 import Modal                       from 'react-modal'
 import sortByFunc                  from 'sort-by'
 import { SORT_ORDER_DESC as desc } from '../../utils/sorting'
@@ -33,7 +33,7 @@ class MainView extends Component {
      * @description Closing the post create modal dialog and calling the action to submitting the data to backend.
      * @param post, new post data
      */
-    createOrUpdatePost = (post) => {
+    createPost = (post) => {
         this.setState({ createPostOpen: false })
         this.props.createPost(post)
     }
@@ -51,11 +51,11 @@ class MainView extends Component {
                 <button onClick={ () => this.setState({ createPostOpen: true }) }>create post</button>
                 <Modal
                     isOpen={ this.state.createPostOpen }
-                    contentLabel='create mew Post'
+                    contentLabel='create new post'
                     onRequestClose={ () => this.setState({ createPostOpen: false }) }
                 >
-                    <CreatePost categories={ categories }
-                                createPost={ (post) => this.createOrUpdatePost(post) }/>
+                    <CreateOrUpdatePostComponent categories={ categories }
+                                                 onComplete={ (post) => this.createPost(post) }/>
                 </Modal>
             </div>
         )

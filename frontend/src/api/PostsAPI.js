@@ -22,3 +22,9 @@ export const createPost = (post) => fetch(`${url}/posts`, {
     headers,
     body: JSON.stringify(post)
 })
+
+export const updatePost = (id, post) => fetch(`${url}/posts/${id}`, {
+    method: 'PUT',
+    headers,
+    body: JSON.stringify(post)
+})
