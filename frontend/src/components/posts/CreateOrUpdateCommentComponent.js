@@ -28,7 +28,7 @@ class CreateOrUpdateCommentComponent extends Component {
 
     componentDidMount() {
         const { postId, comment } = this.props
-        comment && this.setState({
+        comment && comment.id && this.setState({
             postId,
             commentId: comment.id,
             text: comment.body,

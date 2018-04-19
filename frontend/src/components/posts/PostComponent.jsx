@@ -6,7 +6,7 @@ import * as Types                  from '../../types'
 import Modal                       from 'react-modal'
 import { withRouter }              from 'react-router'
 import VoteComponent               from '../VoteComponent'
-
+import dateFormat                  from 'dateformat'
 
 class PostComponent extends Component {
 
@@ -35,7 +35,9 @@ class PostComponent extends Component {
                 <p>body: { post.body }</p>
                 <p>author: { post.author }</p>
                 <p>category: { post.category }</p>
+                { post.timestamp && <p>timestamp: { dateFormat(new Date(post.timestamp), 'yyyy-mm-dd HH:MM') }</p> }
                 <p>voteScore: { post.voteScore }</p>
+
                 <p>comment count: { post.commentCount }</p>
                 { full
                   ?

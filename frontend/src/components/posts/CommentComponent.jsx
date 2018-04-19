@@ -3,7 +3,7 @@ import PropTypes                      from 'prop-types'
 import Modal                          from 'react-modal'
 import CreateOrUpdateCommentComponent from './CreateOrUpdateCommentComponent'
 import VoteComponent                  from '../VoteComponent'
-
+import dateFormat                     from 'dateformat'
 
 class CommentComponent extends Component {
 
@@ -30,7 +30,7 @@ class CommentComponent extends Component {
                  className='postList'>
                 <p>author: { comment.author }</p>
                 <p>body: { comment.body }</p>
-                <p>timestamp: { comment.timestamp }</p>
+                <p>timestamp: { dateFormat(new Date(comment.timestamp), 'yyyy-mm-dd HH:MM') }</p>
                 <p>voteScore: { comment.voteScore }</p>
                 <button onClick={ () => deleteComment(comment.id, postId) }>Delete</button>
                 <button onClick={ () => this.setState({ modalOpen: true, comment }) }>Update</button>
