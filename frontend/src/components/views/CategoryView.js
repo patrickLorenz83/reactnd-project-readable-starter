@@ -26,15 +26,22 @@ class CategoryView extends Component {
 
 
     render() {
-        const { categories, posts, match  } = this.props
+        const { categories, posts, match, createPost, voteUp, voteDown } = this.props
         this.sortingPosts(this.props)
         return (
             <div>
+                Category Overview:
                 <CategoryList categories={ categories }
                               label='Categories'/>
-                <Link to='/' key='overview'>Overview</Link>
+                <Link to='/'
+                      key='overview'>Overview</Link>
                 <SortComponent/>
-                <PostList posts={ posts.filter(post => post.category === match.params.category) }/>
+                <PostList posts={ posts.filter(post => post.category === match.params.category) }
+                          categories={ categories }
+                          createPost={ createPost }
+                          voteUp={ (id) => voteUp(id) }
+                          voteDown={ (id) => voteDown(id) }
+                />
             </div>
         )
     }
@@ -59,6 +66,8 @@ const mapDispatchToProps = (dispatch) => ({
      */
     fetchingPosts: () => dispatch(Actions.fetchAllPosts()),
     createPost: (post) => dispatch(Actions.createPost(post)),
+    voteUp: (postId) => dispatch(Actions.voteUpPost(postId)),
+    voteDown: (postId) => dispatch(Actions.voteDownPost(postId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryView)

@@ -3,8 +3,6 @@ import * as Actions                from '../../actions'
 import { connect }                 from 'react-redux'
 import CategoryList                from '../categories/CategoryList'
 import PostList                    from '../posts/PostList'
-import CreateOrUpdatePostComponent from '../posts/CreateOrUpdatePostComponent'
-import Modal                       from 'react-modal'
 import sortByFunc                  from 'sort-by'
 import { SORT_ORDER_DESC as desc } from '../../utils/sorting'
 import SortComponent               from '../Sort/SortComponent'
@@ -29,34 +27,21 @@ class MainView extends Component {
         posts.sort(sortByFunc(`${sortOrder === desc ? '-' : ''}${sortBy}`))
     }
 
-    /**
-     * @description Closing the post create modal dialog and calling the action to submitting the data to backend.
-     * @param post, new post data
-     */
-    createPost = (post) => {
-        this.setState({ createPostOpen: false })
-        this.props.createPost(post)
-    }
-
     render() {
-        console.log('main view')
-        const { categories, posts } = this.props
+        const { categories, posts, createPost,voteUp,voteDown } = this.props
         this.sortingPosts(this.props)
         return (
             <div>
+                Posts Overview:
                 <CategoryList categories={ categories }
                               label='Categories'/>
                 <SortComponent/>
-                <PostList posts={ posts }/>
-                <button onClick={ () => this.setState({ createPostOpen: true }) }>create post</button>
-                <Modal
-                    isOpen={ this.state.createPostOpen }
-                    contentLabel='create new post'
-                    onRequestClose={ () => this.setState({ createPostOpen: false }) }
-                >
-                    <CreateOrUpdatePostComponent categories={ categories }
-                                                 onComplete={ (post) => this.createPost(post) }/>
-                </Modal>
+                <PostList posts={ posts }
+                          createPost={ createPost }
+                          categories={ categories }
+                          voteUp={ (id) => voteUp(id) }
+                          voteDown={ (id) => voteDown(id) }
+                />
             </div>
         )
     }
@@ -81,6 +66,8 @@ const mapDispatchToProps = (dispatch) => ({
      */
     fetchingPosts: () => dispatch(Actions.fetchAllPosts()),
     createPost: (post) => dispatch(Actions.createPost(post)),
+    voteUp: (postId) => dispatch(Actions.voteUpPost(postId)),
+    voteDown: (postId) => dispatch(Actions.voteDownPost(postId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainView)

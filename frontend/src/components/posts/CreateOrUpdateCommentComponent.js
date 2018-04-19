@@ -9,8 +9,8 @@ class CreateOrUpdateCommentComponent extends Component {
     }
 
     static propTypes = {
-        comment: PropTypes.object.isRequired,
-        postId: PropTypes.string.isRequired,
+        comment: PropTypes.object,
+        postId: PropTypes.string,
         onComplete: PropTypes.func.isRequired
     }
 

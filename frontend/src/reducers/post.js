@@ -1,7 +1,7 @@
 import * as Actions from '../actions'
 
 const initState = {
-    data: [],
+    data: {},
     comments: []
 }
 

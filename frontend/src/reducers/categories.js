@@ -1,6 +1,6 @@
 import * as Actions from '../actions'
 
-const categories = (state = {}, action) => {
+const categories = (state = { data: [] }, action) => {
     switch (action.type) {
         case Actions.RECEIVE_CATEGORIES:
             return {

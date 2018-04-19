@@ -41,16 +41,45 @@ export const createComment = (comment) => dispatch => (
         timestamp: Date.now()
     })
         .then(dispatch(fetchComments(comment.parentId)))
+        .then(dispatch(fetchPost(comment.parentId)))
+
 )
 
+export const voteUpComment = (id,postId) => dispatch => (
+    CommentsApi.voteUp(id)
+        .then(dispatch(fetchComments(postId)))
+)
+export const voteDownComment = (id,postId) => dispatch => (
+    CommentsApi.voteDown(id)
+        .then(dispatch(fetchComments(postId)))
+)
+export const voteUpPost = (id) => dispatch => (
+    PostsApi.voteUp(id)
+        .then(dispatch(fetchAllPosts()))
+        .then(dispatch(fetchPost(id)))
+)
+export const voteDownPost = (id) => dispatch => (
+    PostsApi.voteDown(id)
+        .then(dispatch(fetchAllPosts()))
+        .then(dispatch(fetchPost(id)))
+)
 export const updateComment = (comment) => dispatch => (
     CommentsApi.updateComment(comment)
         .then(dispatch(fetchComments(comment.parentId)))
+        .then(dispatch(fetchPost(comment.parentId)))
 )
 
 export const deleteComment = (commentId, postId) => dispatch => (
     CommentsApi.deleteComment(commentId)
         .then(dispatch(fetchComments(postId)))
+        .then(dispatch(fetchPost(postId)))
+)
+
+export const deletePost = (postId) => dispatch => (
+    PostsApi.deletePost(postId)
+        .then(console.log('delete done'))
+        .then(dispatch(fetchAllPosts()))
+        .then(dispatch(fetchPost(postId)))
 )
 
 export const updatePost = (id, post) => dispatch => (

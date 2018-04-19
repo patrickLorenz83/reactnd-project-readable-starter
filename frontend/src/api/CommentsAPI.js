@@ -30,3 +30,15 @@ export const updateComment = (comment) => fetch(`${url}/comments/${comment.id}/`
     headers,
     body: JSON.stringify(comment)
 })
+
+export const voteUp = (id) => fetch(`${url}/comments/${id}/`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ option: 'upVote' })
+})
+
+export const voteDown = (id) => fetch(`${url}/comments/${id}/`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ option: 'downVote' })
+})

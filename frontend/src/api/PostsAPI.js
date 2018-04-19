@@ -6,7 +6,7 @@ if ( !token )
 
 const headers = {
     'Accept': 'application/json',
-    'Content-Type':'application/json',
+    'Content-Type': 'application/json',
     'Authorization': token
 }
 
@@ -23,8 +23,26 @@ export const createPost = (post) => fetch(`${url}/posts`, {
     body: JSON.stringify(post)
 })
 
+export const voteUp = (id) => fetch(`${url}/posts/${id}`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ option: 'upVote' })
+})
+
+export const voteDown = (id) => fetch(`${url}/posts/${id}`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ option: 'downVote' })
+})
+
 export const updatePost = (id, post) => fetch(`${url}/posts/${id}`, {
     method: 'PUT',
     headers,
     body: JSON.stringify(post)
+})
+
+export const deletePost = (id) => fetch(`${url}/posts/${id}`, {
+    method: 'DELETE',
+    headers,
+    body: undefined
 })

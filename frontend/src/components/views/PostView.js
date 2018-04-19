@@ -29,7 +29,10 @@ class PostView extends Component {
     }
 
     render() {
-        const { post, categories, updatePost, comments, updateComment, deleteComment } = this.props
+        const {
+            post, categories, updatePost, comments, updateComment, deleteComment, deletePost, voteUp, voteDown,
+            voteUpComment, voteDownComment
+        } = this.props
         return (
             <div>
                 <button onClick={ () => this.props.history.goBack() }
@@ -38,14 +41,21 @@ class PostView extends Component {
                 <PostComponent post={ post }
                                full={ true }
                                categories={ categories }
-                               updatePost={ updateData => updatePost(post.id, updateData) }/>
+                               deletePost={ deletePost }
+                               updatePost={ updateData => updatePost(post.id, updateData) }
+                               voteUp={ () => voteUp(post.id) }
+                               voteDown={ () => voteDown(post.id) }
+                />
                 { comments && comments.length > 0 &&
                 <div>
                     Comments:
                     { comments.map(element => <CommentComponent comment={ element }
+                                                                key={ `${element.id}-comment` }
                                                                 postId={ post.id }
                                                                 deleteComment={ deleteComment }
                                                                 updateComment={ updateComment }
+                                                                voteUp={ () => voteUpComment(element.id, post.id) }
+                                                                voteDown={ () => voteDownComment(element.id, post.id) }
                     />) }
                 </div>
                 }
@@ -53,12 +63,13 @@ class PostView extends Component {
                 <Modal
                     isOpen={ this.state.modalOpen }
                     contentLabel='update post'
+                    ariaHideApp={ false }
                     onRequestClose={ () => this.setState({ modalOpen: false }) }
                 >
                     <CreateOrUpdateCommentComponent
                         comment={ {} }
-                        postId={ {} }
-                        onComplete={ (comment) => comment.id ? this.updateComment(comment) : this.createComment(comment) }/>
+                        postId={ '' }
+                        onComplete={ (comment) => this.createComment(comment) }/>
                 </Modal>
             </div>
         )
@@ -86,7 +97,12 @@ const mapDispatchToProps = (dispatch) => ({
     updatePost: (id, post) => dispatch(Actions.updatePost(id, post)),
     updateComment: (comment) => dispatch(Actions.updateComment(comment)),
     createComment: (comment) => dispatch(Actions.createComment(comment)),
-    deleteComment: (commentId, postId) => dispatch(Actions.deleteComment(commentId, postId))
+    deleteComment: (commentId, postId) => dispatch(Actions.deleteComment(commentId, postId)),
+    deletePost: (postId) => dispatch(Actions.deletePost(postId)),
+    voteUp: (postId) => dispatch(Actions.voteUpPost(postId)),
+    voteDown: (postId) => dispatch(Actions.voteDownPost(postId)),
+    voteUpComment: (commentId, postId) => dispatch(Actions.voteUpComment(commentId, postId)),
+    voteDownComment: (commentId, postId) => dispatch(Actions.voteDownComment(commentId, postId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostView)

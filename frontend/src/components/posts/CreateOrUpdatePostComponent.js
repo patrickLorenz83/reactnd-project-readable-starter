@@ -26,7 +26,6 @@ class CreateOrUpdatePostComponent extends Component {
     componentDidMount() {
         const { post } = this.props
 
-        console.log('creating post', post)
         post && this.setState({
             postId: post.id,
             title: post.title,
@@ -70,7 +69,7 @@ class CreateOrUpdatePostComponent extends Component {
 }
 
 CreateOrUpdatePostComponent.propTypes = {
-    categories: PropTypes.arrayOf(Types.Category).isRequired,
+    categories: PropTypes.arrayOf(Types.Category),
     post: PropTypes.object,
     onComplete: PropTypes.func.isRequired
 }
